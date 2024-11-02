@@ -1,9 +1,11 @@
 import './main.css'
 
-import { Sigin } from './pages/sign-in'
+import { RouterProvider } from 'react-router-dom'
+
+import { router } from './routes'
 
 function App() {
-  return <Sigin />
+  return <RouterProvider router={router} />
 }
 
 export default App
