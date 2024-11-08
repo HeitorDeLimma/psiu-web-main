@@ -17,7 +17,7 @@ export function SignInForm() {
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
 
-    navigate('/feed')
+    navigate('/')
   }
 
   return (
@@ -85,7 +85,7 @@ export function SignInForm() {
       </div>
 
       <div className="flex flex-col gap-3 items-center">
-        <Button className="w-full bg-yellow-400 font-semibold text-zinc-900 py-2">
+        <Button className="w-full font-semibold bg-yellow-500 text-zinc-900 py-2">
           ENTRAR
         </Button>
 

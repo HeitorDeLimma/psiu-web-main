@@ -11,19 +11,15 @@ export function Button({ children, className = '', ...rest }: ButtonProps) {
       {...rest}
       className={`
         flex 
-        justify-center
         items-center 
-        gap-2
-        bg-zinc-900
-        text-zinc-300
-        text-sm
-        py-3
-        px-4
-        rounded-md
-        transition-opacity
-        hover:opacity-75
+        justify-center
+        text-zinc-300 
+        text-sm 
+        py-3 
+        px-4 
+        rounded-md 
         ${className}
-        `}
+      `}
     >
       {children}
     </button>

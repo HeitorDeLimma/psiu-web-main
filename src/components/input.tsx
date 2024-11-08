@@ -1,7 +1,7 @@
-import { InputHTMLAttributes } from 'react'
+import type { InputHTMLAttributes } from 'react'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  classname?: string
+  className?: string
 }
 
 export function Input({ className, ...rest }: InputProps) {
@@ -9,18 +9,18 @@ export function Input({ className, ...rest }: InputProps) {
     <input
       {...rest}
       className={`
-        rounded-md
-        bg-transparent
-        text-zinc-400
-        text-sm
-        border-2
-        border-zinc-600
-        outline-none
+        rounded-md 
+        bg-transparent 
+        text-zinc-400 
+        text-sm 
+        border-2 
+        border-zinc-600 
+        outline-none 
         py-2
-        px-3
-        focus:border-yellow-500
+        px-3 
+        focus:border-yellow-500 
         ${className}
-        `}
+      `}
     />
   )
 }

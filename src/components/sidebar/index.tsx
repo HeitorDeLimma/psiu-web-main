@@ -17,38 +17,36 @@ export function Sidebar() {
           <h1 className="text-zinc-300 text-xl font-medium">Psiuuu!</h1>
         </div>
 
-        <nav>
-          <ul className="space-y-2">
-            <SidebarLink href="/feed">
-              <House />
-              Página inicial
-            </SidebarLink>
+        <nav className="space-y-2">
+          <SidebarLink href="/">
+            <House />
+            Página inicial
+          </SidebarLink>
 
-            <SidebarLink href="/">
-              <Search />
-              Pesquisa
-            </SidebarLink>
+          <SidebarLink href="/">
+            <Search />
+            Pesquisa
+          </SidebarLink>
 
-            <SidebarLink href="/">
-              <Compass />
-              Explorar
-            </SidebarLink>
+          <SidebarLink href="/">
+            <Compass />
+            Explorar
+          </SidebarLink>
 
-            <SidebarLink href="/">
-              <MessageCircleMore />
-              Mensagens
-            </SidebarLink>
+          <SidebarLink href="/">
+            <MessageCircleMore />
+            Mensagens
+          </SidebarLink>
 
-            <SidebarLink href="/">
-              <Bell />
-              Notificações
-            </SidebarLink>
+          <SidebarLink href="/">
+            <Bell />
+            Notificações
+          </SidebarLink>
 
-            <SidebarLink href="/">
-              <CirclePlus />
-              Criar
-            </SidebarLink>
-          </ul>
+          <SidebarLink href="/">
+            <CirclePlus />
+            Criar
+          </SidebarLink>
         </nav>
       </div>
 
