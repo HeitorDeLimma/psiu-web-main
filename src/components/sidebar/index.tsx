@@ -7,11 +7,12 @@ import {
   Search,
 } from 'lucide-react'
 
+import { Avatar } from '../avatar'
 import { SidebarLink } from './sidebar-link'
 
 export function Sidebar() {
   return (
-    <div className="h-screen w-80 flex flex-col justify-between bg-zinc-900 px-6 py-8">
+    <div className=" h-screen w-80 flex flex-col justify-between bg-zinc-900 px-6 py-8">
       <div className="space-y-12">
         <div className="px-4">
           <h1 className="text-zinc-300 text-xl font-medium">Psiuuu!</h1>
@@ -52,7 +53,7 @@ export function Sidebar() {
 
       <div>
         <SidebarLink href="/profile">
-          <div className="size-8 bg-zinc-300 rounded-full" />
+          <Avatar className="size-8" />
           Perfil
         </SidebarLink>
       </div>

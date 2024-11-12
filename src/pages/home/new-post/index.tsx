@@ -34,15 +34,14 @@ export function NewPost() {
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                placeholder="Sobre o que você quer falar"
                 className="
-                flex-1 
-                bg-transparent 
-                outline-0 
-                text-sm 
-                p-3 
-                border-b-[1px] 
-                border-zinc-700 
+                flex-1
+                bg-transparent
+                outline-0
+                text-sm
+                p-3
+                border-b-[1px]
+                border-zinc-700
                 text-zinc-200"
               ></textarea>
 

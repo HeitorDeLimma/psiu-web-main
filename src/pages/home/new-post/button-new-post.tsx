@@ -10,14 +10,14 @@ export function ButtonNewPost({ className, ...rest }: ButtonNewPostProps) {
     <button
       {...rest}
       className={`
-          relative 
-          ring-1 
-          ring-zinc-300 
-          border-2 
-          border-zinc-950 
+          relative
+          ring-1
+          ring-zinc-300
+          border-2
+          border-zinc-950
           size-16 
           rounded-full 
-          bg-zinc-400
+          bg-zinc-200
           cursor-pointer
           ${className}
         `}
