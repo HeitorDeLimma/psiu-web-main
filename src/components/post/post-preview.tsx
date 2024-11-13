@@ -4,6 +4,7 @@ import { Bookmark, Ellipsis, Heart, MessageCircle, X } from 'lucide-react'
 import { FormEvent, useRef, useState } from 'react'
 
 import { Avatar } from '../avatar'
+import { Comment } from './commentt'
 
 interface PostPreviewProps {
   open: boolean
@@ -63,7 +64,13 @@ export function PostPreview({ open, setOpen }: PostPreviewProps) {
               <Ellipsis className="text-zinc-500 size-5 cursor-pointer transition-colors hover:text-zinc-400" />
             </div>
 
-            <div className="flex-1 border-b-[1px] border-zinc-900"></div>
+            <div
+              className="overflow-y-scroll flex-1 space-y-8 border-b-[1px] border-zinc-900 p-6"
+              style={{ maxHeight: 'calc(100vh - 258px' }}
+            >
+              <Comment />
+              <Comment />
+            </div>
 
             <div className="flex items-center justify-between p-4 border-b-[1px] border-zinc-900">
               <div className="flex items-center gap-2 text-zinc-400">
