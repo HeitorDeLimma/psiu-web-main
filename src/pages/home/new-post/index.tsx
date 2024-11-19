@@ -30,24 +30,26 @@ export function NewPost() {
               </h1>
             </div>
 
-            <form className="flex flex-col h-full justify-between bg-zinc-800 rounded-md">
+            <form className="h-full flex flex-col justify-between bg-zinc-800 rounded-lg">
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
+                placeholder="Sobre o que você quer falar?"
                 className="
-                flex-1
-                bg-transparent
-                outline-0
-                text-sm
-                p-3
-                border-b-[1px]
-                border-zinc-700
-                text-zinc-200"
+                  flex-1 
+                  bg-transparent 
+                  outline-0 
+                  text-sm 
+                  text-zinc-200 
+                  border-b-[1px] 
+                  border-zinc-700
+                  p-3
+                "
               ></textarea>
 
               <div className="flex justify-end py-4 px-3">
                 <Button
-                  className="bg-zinc-900 py-2 disabled:bg-zinc-700 disabled:cursor-not-allowed"
+                  className="bg-zinc-900 disabled:bg-zinc-700 disabled:cursor-not-allowed"
                   disabled={!content}
                 >
                   Publicar

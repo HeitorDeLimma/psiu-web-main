@@ -11,8 +11,10 @@ import { Avatar } from '../avatar'
 import { SidebarLink } from './sidebar-link'
 
 export function Sidebar() {
+  const avatar = 'https://api.dicebear.com/9.x/adventurer/svg?seed=heitorlima'
+
   return (
-    <div className=" h-screen w-80 flex flex-col justify-between bg-zinc-900 px-6 py-8">
+    <div className="h-screen w-80 flex flex-col justify-between bg-zinc-900 px-6 py-8">
       <div className="space-y-12">
         <div className="px-4">
           <h1 className="text-zinc-300 text-xl font-medium">Psiuuu!</h1>
@@ -53,7 +55,7 @@ export function Sidebar() {
 
       <div>
         <SidebarLink href="/profile">
-          <Avatar className="size-8" />
+          <Avatar src={avatar} className="size-8 bg-zinc-200" />
           Perfil
         </SidebarLink>
       </div>
