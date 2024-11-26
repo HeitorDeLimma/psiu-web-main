@@ -1,28 +1,20 @@
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { Heart } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { TAILWIND_COLORS } from '@/constants/tailwind-colors'
-import { getRandomAdjectives } from '@/utils/get-random-adjectives'
+import { IComment } from '@/http/comments/types'
+import { getRandomAdjective } from '@/utils/get-random-adjective'
 
 import { Avatar } from '../avatar'
-import type { Reaction } from '.'
+import { Reaction } from './reaction'
 
 export interface CommentProps {
-  id: string
-  postId: string
-  content: string
-  commentedAt: string
-  updatedAt: string | null
-  reactions: Reaction[]
+  comment: IComment
 }
 
 export function Comment({
-  content,
-  commentedAt,
-  updatedAt,
-  reactions,
+  comment: { content, commentedAt, updatedAt, reactions },
 }: CommentProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isOverflowing, setIsOverflowing] = useState(false)
@@ -44,7 +36,7 @@ export function Comment({
     [],
   )
 
-  const adjective = useMemo(() => getRandomAdjectives(), [])
+  const adjective = useMemo(() => getRandomAdjective(), [])
   const avatar = useMemo(
     () => `https://api.dicebear.com/9.x/adventurer/svg?seed=${adjective}`,
     [adjective],
@@ -101,7 +93,7 @@ export function Comment({
         </div>
       </div>
 
-      <Heart className="col-span-1 size-4 text-zinc-300 cursor-pointer transition-opacity hover:opacity-50" />
+      <Reaction position="left" className="size-4 text-zinc-400" />
     </div>
   )
 }

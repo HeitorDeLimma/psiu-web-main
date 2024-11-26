@@ -1,23 +1,58 @@
-import { Eye, EyeOff } from 'lucide-react'
+import { HTTPError } from 'ky'
+import { Eye, EyeOff, Loader } from 'lucide-react'
 import { type FormEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
+import { useAuth } from '@/contexts/auth'
+import { authenticateWithPassword } from '@/http/auth/authenticate-with-password'
 
 export function SignInForm() {
   const navigate = useNavigate()
+  const { handleStudent } = useAuth()
 
+  const [ra, setRa] = useState('')
+  const [password, setPassword] = useState('')
+
+  const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
   function handleShowPassword() {
     setShowPassword(!showPassword)
   }
 
-  function handleSubmit(event: FormEvent) {
+  async function handleSubmit(event: FormEvent) {
+    setLoading(true)
+
     event.preventDefault()
 
-    navigate('/')
+    try {
+      const { result, message, data } = await authenticateWithPassword({
+        ra,
+        password,
+      })
+
+      if (result === 'success') {
+        if (data) {
+          handleStudent(data.student)
+
+          toast.success(message)
+          navigate('/')
+        }
+      }
+    } catch (error) {
+      console.log(error)
+
+      if (error instanceof HTTPError) {
+        const { message } = await error.response.json()
+
+        toast.error(message)
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -27,7 +62,12 @@ export function SignInForm() {
           RA
         </label>
 
-        <Input id="ra" type="text" />
+        <Input
+          id="ra"
+          value={ra}
+          onChange={(e) => setRa(e.target.value)}
+          type="text"
+        />
       </div>
 
       <div className="flex flex-col gap-1">
@@ -38,6 +78,8 @@ export function SignInForm() {
         <div className="relative">
           <Input
             id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             type={showPassword ? 'text' : 'password'}
             className="w-full"
           />
@@ -86,7 +128,7 @@ export function SignInForm() {
 
       <div className="flex flex-col gap-3 items-center">
         <Button className="w-full font-semibold bg-yellow-500 text-zinc-900 py-2">
-          ENTRAR
+          {loading ? <Loader className="size-5 animate-spin" /> : 'ENTRAR'}
         </Button>
 
         <a href="" className="text-yellow-500 text-xs hover:underline">

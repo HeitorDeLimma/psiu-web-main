@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 interface ButtonOptionProps {
   children: ReactNode
@@ -15,14 +15,14 @@ export function ButtonOption({
     <button
       onClick={onClick}
       className={`
-        py-4 
         w-full
+        py-4
         text-sm
-        text-zinc-300
-        border-b-[1px]
+        border-t-[1px]
         first:border-t-0
         border-zinc-700
-        ${className}`}
+        ${className}
+      `}
     >
       {children}
     </button>

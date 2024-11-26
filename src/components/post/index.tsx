@@ -1,55 +1,26 @@
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { Bookmark, Ellipsis, Heart, MessageCircle } from 'lucide-react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Bookmark, Ellipsis, MessageCircle } from 'lucide-react'
+import { useMemo, useState } from 'react'
 
 import { TAILWIND_COLORS } from '@/constants/tailwind-colors'
-import { getRandomAdjectives } from '@/utils/get-random-adjectives'
+import { IPost } from '@/http/posts/types'
+import { getRandomAdjective } from '@/utils/get-random-adjective'
 
 import { Avatar } from '../avatar'
-import { Reaction } from '../reaction'
-import type { CommentProps } from './comment'
 import { Options } from './options'
 import { PostPreview } from './post-preview'
-
-export enum EnumTypeReaction {
-  APOIO,
-  ENTENDO_VOCE,
-  FORCA,
-  TRISTEZA,
-  ESTAMOS_JUNTOS,
-}
-
-export interface Reaction {
-  id: string
-  postId: string
-  type: EnumTypeReaction
-  reactedAt: string
-}
+import { Reaction } from './reaction'
 
 export interface PostProps {
-  id: string
-  content: string
-  publishedAt: string
-  updatedAt: string | null
-  comments: CommentProps[]
-  reactions: Reaction[]
+  post: IPost
 }
 
 export function Post({
-  id,
-  content,
-  publishedAt,
-  updatedAt,
-  comments,
-  reactions,
+  post: { id, content, publishedAt, updatedAt, comments, reactions },
 }: PostProps) {
   const [modalPreview, setModalPreview] = useState(false)
   const [modalOptions, setModalOptions] = useState(false)
-  const [modalReaction, setModalReaction] = useState(false)
-
-  // const [isMouseResting, setIsMouseResting] = useState(false)
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   function handleModalPreview() {
     setModalPreview(!modalPreview)
@@ -59,30 +30,12 @@ export function Post({
     setModalOptions(!modalOptions)
   }
 
-  function handleMouseMove() {
-    if (modalReaction) setModalReaction(false)
-
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-    }
-
-    timeoutRef.current = setTimeout(() => {
-      setModalReaction(true)
-    }, 700)
-  }
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
-    }
-  }, [])
-
   const colors = useMemo(
     () => TAILWIND_COLORS[Math.floor(Math.random() * TAILWIND_COLORS.length)],
     [],
   )
 
-  const adjective = useMemo(() => getRandomAdjectives(), [])
+  const adjective = useMemo(() => getRandomAdjective(), [])
   const avatar = useMemo(
     () => `https://api.dicebear.com/9.x/adventurer/svg?seed=${adjective}`,
     [adjective],
@@ -90,8 +43,8 @@ export function Post({
 
   return (
     <div>
-      <div className="w-[432px] space-y-3">
-        <div className="flex items-center justify-between">
+      <div className="w-[432px] space-y-0">
+        <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
             <Avatar
               src={avatar}
@@ -122,16 +75,8 @@ export function Post({
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-zinc-400">
-            <div className="relative">
-              <Heart
-                onMouseMove={handleMouseMove}
-                className="size-5 cursor-pointer transition-opacity hover:opacity-50"
-              />
-              <Reaction
-                open={modalReaction}
-                onClose={() => setModalReaction(false)}
-              />
-            </div>
+            <Reaction className="size-5" />
+
             <MessageCircle
               onClick={handleModalPreview}
               className="size-5 cursor-pointer transition-opacity hover:opacity-50"

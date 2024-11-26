@@ -6,7 +6,7 @@ interface ButtonNewPostProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export function ButtonNewPost({ className, ...rest }: ButtonNewPostProps) {
-  const avatar = 'https://api.dicebear.com/9.x/adventurer/svg?seed=heitorlima'
+  const avatar = 'https://api.dicebear.com/9.x/adventurer/svg?seed=natanfoleto'
 
   return (
     <button

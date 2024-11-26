@@ -1,15 +1,17 @@
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { Bookmark, Ellipsis, Heart, MessageCircle, X } from 'lucide-react'
+import { Bookmark, Ellipsis, MessageCircle, X } from 'lucide-react'
 import { type FormEvent, useRef, useState } from 'react'
 
+import { IPost } from '@/http/posts/types'
+
 import { Avatar } from '../avatar'
-import type { PostProps } from '.'
 import { Comment } from './comment'
 import { Options } from './options'
+import { Reaction } from './reaction'
 
 interface PostPreviewProps {
-  post: PostProps
+  post: IPost
   user?: {
     name: string
     avatar: string
@@ -29,11 +31,11 @@ export function PostPreview({
   const [comment, setComment] = useState('')
   const [modalOptions, setModalOptions] = useState(false)
 
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
   function handleModalOptions() {
     setModalOptions(!modalOptions)
   }
-
-  const inputRef = useRef<HTMLInputElement | null>(null)
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
@@ -43,7 +45,7 @@ export function PostPreview({
     open && (
       <div
         onClick={setOpen}
-        className="absolute inset-0 flex justify-center bg-black/25 py-8"
+        className="absolute inset-0 z-10 flex justify-center bg-black/25 py-8"
       >
         <X
           onClick={setOpen}
@@ -87,32 +89,42 @@ export function PostPreview({
             </div>
 
             <div
-              className="overflow-y-scroll space-y-8 flex-1 border-b-[1px] border-zinc-900 p-6"
+              className="overflow-y-scroll overflow-x-hidden space-y-8 flex-1 border-b-[1px] border-zinc-900 p-6"
               style={{ maxHeight: 'calc(100vh - 258px)' }}
             >
               {post.comments.map((comment) => (
                 <Comment
                   key={comment.id}
-                  id={comment.id}
-                  postId={comment.postId}
-                  content={comment.content}
-                  commentedAt={comment.commentedAt}
-                  updatedAt={comment.updatedAt}
-                  reactions={comment.reactions}
+                  comment={{
+                    id: comment.id,
+                    postId: comment.postId,
+                    content: comment.content,
+                    commentedAt: comment.commentedAt,
+                    updatedAt: comment.updatedAt,
+                    reactions: comment.reactions,
+                  }}
                 />
               ))}
             </div>
 
-            <div className="flex items-center justify-between border-b-[1px] border-zinc-900 p-4">
-              <div className="flex items-center gap-2 text-zinc-400">
-                <Heart className="size-5 cursor-pointer transition-opacity hover:opacity-50" />
-                <MessageCircle
-                  onClick={() => inputRef.current?.focus()}
-                  className="size-5 cursor-pointer transition-opacity hover:opacity-50"
-                />
+            <div className="border-b-[1px] border-zinc-900 p-4">
+              <div className="flex items-center justify-between ">
+                <div className="flex items-center gap-2 text-zinc-400">
+                  <Reaction className="size-5" />
+
+                  <MessageCircle
+                    onClick={() => inputRef.current?.focus()}
+                    className="size-5 cursor-pointer transition-opacity hover:opacity-50"
+                  />
+                </div>
+
+                <Bookmark className="size-5 text-zinc-400 cursor-pointer transition-opacity hover:opacity-50" />
               </div>
 
-              <Bookmark className="size-5 text-zinc-400 cursor-pointer transition-opacity hover:opacity-50" />
+              <p className="text-xs text-zinc-400 cursor-pointer hover:underline">
+                <strong>{post.reactions.length}</strong> pessoas reagiram a essa
+                publicação
+              </p>
             </div>
 
             <form onSubmit={handleSubmit} className="flex items-center">

@@ -3,6 +3,6 @@ export function getInitialsName(name: string) {
 
   return parts
     .slice(0, 2)
-    .map((part) => part[0].toLocaleUpperCase())
+    .map((part) => part[0].toUpperCase())
     .join('')
 }

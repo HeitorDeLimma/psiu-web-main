@@ -5,7 +5,7 @@ interface OptionsProps {
   setOpen(): void
 }
 
-export function Options({ setOpen, open }: OptionsProps) {
+export function Options({ open, setOpen }: OptionsProps) {
   return (
     open && (
       <div
@@ -35,21 +35,26 @@ export function Options({ setOpen, open }: OptionsProps) {
           </ButtonOption>
 
           <ButtonOption
+            className="text-zinc-300"
             onClick={() => {
               //
             }}
           >
             Adicionar como favorito
           </ButtonOption>
+
           <ButtonOption
+            className="text-zinc-300"
             onClick={() => {
               //
             }}
           >
-            Copiar Link
+            Copiar link
           </ButtonOption>
 
-          <ButtonOption onClick={setOpen}>Cancelar</ButtonOption>
+          <ButtonOption className="text-zinc-300" onClick={setOpen}>
+            Cancelar
+          </ButtonOption>
         </div>
       </div>
     )
