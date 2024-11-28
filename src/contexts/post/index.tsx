@@ -1,7 +1,28 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 
+import {
+  createComment,
+  type CreateCommentRequest,
+  type CreateCommentResponse,
+} from '@/http/comments/create-comment'
+import {
+  createPost,
+  type CreatePostRequest,
+  type CreatePostResponse,
+} from '@/http/posts/create-posts'
 import { getPosts } from '@/http/posts/get-posts'
 import { IPost } from '@/http/posts/types'
+import {
+  createPostReaction,
+  type CreatePostReactionRequest,
+  type CreatePostReactionResponse,
+} from '@/http/reactions/create-post-reaction'
 
 import { PostContextType, PostProviderProps } from './types'
 
@@ -10,20 +31,69 @@ const PostContext = createContext<PostContextType>({} as PostContextType)
 const PostProvider = ({ children }: PostProviderProps) => {
   const [posts, setPosts] = useState<IPost[]>([])
 
-  useEffect(() => {
-    async function fetch() {
-      const { result, data } = await getPosts()
+  const fetchPosts = useCallback(async () => {
+    const { result, data } = await getPosts()
 
-      if (result === 'success') {
-        if (data) setPosts(data)
-      }
+    if (result === 'success') {
+      if (data) setPosts(data)
     }
-
-    fetch()
   }, [])
 
+  useEffect(() => {
+    fetchPosts()
+  }, [fetchPosts])
+
+  const onCreatePost = useCallback(
+    async ({ content }: CreatePostRequest): Promise<CreatePostResponse> => {
+      const { result, message } = await createPost({ content })
+
+      if (result === 'success') {
+        await fetchPosts()
+      }
+
+      return { result, message }
+    },
+    [fetchPosts],
+  )
+
+  const onCreateComment = useCallback(
+    async ({
+      postId,
+      content,
+    }: CreateCommentRequest): Promise<CreateCommentResponse> => {
+      const { result, message } = await createComment({ postId, content })
+
+      if (result === 'success') {
+        await fetchPosts()
+      }
+
+      return { result, message }
+    },
+    [fetchPosts],
+  )
+
+  const onCreatePostReaction = useCallback(
+    async ({
+      postId,
+      type,
+    }: CreatePostReactionRequest): Promise<CreatePostReactionResponse> => {
+      const { result, message } = await createPostReaction({ postId, type })
+
+      if (result === 'success') {
+        await fetchPosts()
+      }
+
+      return { result, message }
+    },
+    [fetchPosts],
+  )
+
   return (
-    <PostContext.Provider value={{ posts }}>{children}</PostContext.Provider>
+    <PostContext.Provider
+      value={{ posts, onCreatePost, onCreateComment, onCreatePostReaction }}
+    >
+      {children}
+    </PostContext.Provider>
   )
 }
 
