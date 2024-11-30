@@ -23,6 +23,11 @@ import {
   type CreatePostReactionRequest,
   type CreatePostReactionResponse,
 } from '@/http/reactions/create-post-reaction'
+import {
+  deletePostReaction,
+  type DeletePostReactionRequest,
+  type DeletePostReactionResponse,
+} from '@/http/reactions/delete-post-reaction'
 
 import { PostContextType, PostProviderProps } from './types'
 
@@ -87,10 +92,30 @@ const PostProvider = ({ children }: PostProviderProps) => {
     },
     [fetchPosts],
   )
+  const onDeletePostReaction = useCallback(
+    async ({
+      reactionId,
+    }: DeletePostReactionRequest): Promise<DeletePostReactionResponse> => {
+      const { result, message } = await deletePostReaction({ reactionId })
+
+      if (result === 'success') {
+        await fetchPosts()
+      }
+
+      return { result, message }
+    },
+    [fetchPosts],
+  )
 
   return (
     <PostContext.Provider
-      value={{ posts, onCreatePost, onCreateComment, onCreatePostReaction }}
+      value={{
+        posts,
+        onCreatePost,
+        onCreateComment,
+        onCreatePostReaction,
+        onDeletePostReaction,
+      }}
     >
       {children}
     </PostContext.Provider>

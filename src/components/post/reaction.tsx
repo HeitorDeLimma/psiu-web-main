@@ -78,7 +78,7 @@ export function Reaction({
       }
 
       if (commentId) {
-        //
+        // Cria a reação do comentário
       }
     } catch (error) {
       console.log(error)
