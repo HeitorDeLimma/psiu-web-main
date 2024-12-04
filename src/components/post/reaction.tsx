@@ -20,7 +20,8 @@ export function Reaction({
   postId,
   commentId,
 }: ReactionProps) {
-  const { onCreatePostReaction } = usePost()
+  const { onCreatePostReaction, onCreateCommentReaction } = usePost()
+
   const [open, setOpen] = useState(false)
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -78,7 +79,9 @@ export function Reaction({
       }
 
       if (commentId) {
-        // Cria a reação do comentário
+        const { result } = await onCreateCommentReaction({ commentId, type })
+
+        if (result === 'success') handleClose()
       }
     } catch (error) {
       console.log(error)

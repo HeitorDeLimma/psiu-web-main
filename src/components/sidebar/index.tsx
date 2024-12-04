@@ -65,6 +65,7 @@ export function Sidebar() {
             className="size-8 bg-zinc-200"
             onError={(e) => console.log(e)}
           />
+
           {student?.name || 'Perfil'}
         </SidebarLink>
       </div>

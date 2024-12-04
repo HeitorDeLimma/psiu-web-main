@@ -1,4 +1,4 @@
-import { IReactionComment } from '../reactions/types'
+import type { IReactionComment } from '../reactions/types'
 
 export interface IComment {
   id: string

@@ -1,5 +1,5 @@
 import { api } from '../api-client'
-import { IPost } from './types'
+import type { IPost } from './types'
 
 export interface GetPostsResponse {
   result: 'success' | 'error'

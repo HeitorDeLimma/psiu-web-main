@@ -7,13 +7,14 @@ import { toast } from 'sonner'
 
 import { REACTION_LIST } from '@/constants/reactions'
 import { usePost } from '@/contexts/post'
-import { IPost } from '@/http/posts/types'
+import type { IPost } from '@/http/posts/types'
 import type { IReactionPost } from '@/http/reactions/types'
 
 import { Avatar } from '../avatar'
 import { Comment } from './comment'
 import { Options } from './options'
 import { Reaction } from './reaction'
+import { ReactionList } from './reaction-list'
 
 interface PostPreviewProps {
   post: IPost
@@ -39,11 +40,16 @@ export function PostPreview({
 
   const [comment, setComment] = useState('')
   const [modalOptions, setModalOptions] = useState(false)
+  const [modalReactionList, setModalReactionList] = useState(false)
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   function handleModalOptions() {
     setModalOptions(!modalOptions)
+  }
+
+  function handleModalReactionList() {
+    setModalReactionList(!modalReactionList)
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -151,7 +157,7 @@ export function PostPreview({
             </div>
 
             <div className="border-b-[1px] border-zinc-900 p-4">
-              <div className="flex items-center justify-between ">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-zinc-400">
                   <Reaction postId={post.id} className="size-5" />
 
@@ -164,8 +170,11 @@ export function PostPreview({
                 <Bookmark className="size-5 text-zinc-400 cursor-pointer transition-opacity hover:opacity-50" />
               </div>
 
-              <p className="text-xs text-zinc-400 cursor-pointer hover:underline">
-                <strong>{post.reactions.length}</strong> pessoas reagiram a essa
+              <p
+                onClick={handleModalReactionList}
+                className="text-xs text-zinc-400 cursor-pointer hover:underline"
+              >
+                <strong>{post.reactions.length}</strong> pessoas reagiram essa
                 publicação
               </p>
             </div>
@@ -190,6 +199,11 @@ export function PostPreview({
           </div>
 
           <Options open={modalOptions} setOpen={handleModalOptions} />
+          <ReactionList
+            open={modalReactionList}
+            setOpen={handleModalReactionList}
+            reactions={post.reactions}
+          />
         </div>
       </div>
     )

@@ -6,7 +6,7 @@ import { useMemo, useState } from 'react'
 import { REACTION_LIST } from '@/constants/reactions'
 import { TAILWIND_COLORS } from '@/constants/tailwind-colors'
 import { usePost } from '@/contexts/post'
-import { IPost } from '@/http/posts/types'
+import type { IPost } from '@/http/posts/types'
 import { getRandomAdjective } from '@/utils/get-random-adjective'
 
 import { Avatar } from '../avatar'

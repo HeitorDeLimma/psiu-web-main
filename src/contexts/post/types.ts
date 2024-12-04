@@ -7,12 +7,20 @@ import type {
 import type {
   CreatePostRequest,
   CreatePostResponse,
-} from '@/http/posts/create-posts'
-import { IPost } from '@/http/posts/types'
+} from '@/http/posts/create-post'
+import type { IPost } from '@/http/posts/types'
+import type {
+  CreateCommentReactionRequest,
+  CreateCommentReactionResponse,
+} from '@/http/reactions/create-comment-reaction'
 import type {
   CreatePostReactionRequest,
   CreatePostReactionResponse,
 } from '@/http/reactions/create-post-reaction'
+import type {
+  DeleteCommentReactionRequest,
+  DeleteCommentReactionResponse,
+} from '@/http/reactions/delete-comment-reaction'
 import type {
   DeletePostReactionRequest,
   DeletePostReactionResponse,
@@ -27,9 +35,15 @@ export interface PostContextType {
   onCreatePost(post: CreatePostRequest): Promise<CreatePostResponse>
   onCreateComment(comment: CreateCommentRequest): Promise<CreateCommentResponse>
   onCreatePostReaction(
-    comment: CreatePostReactionRequest,
+    reaction: CreatePostReactionRequest,
   ): Promise<CreatePostReactionResponse>
   onDeletePostReaction(
     reaction: DeletePostReactionRequest,
   ): Promise<DeletePostReactionResponse>
+  onCreateCommentReaction(
+    reaction: CreateCommentReactionRequest,
+  ): Promise<CreateCommentReactionResponse>
+  onDeleteCommentReaction(
+    reaction: DeleteCommentReactionRequest,
+  ): Promise<DeleteCommentReactionResponse>
 }

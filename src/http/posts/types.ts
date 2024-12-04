@@ -1,5 +1,5 @@
-import { IComment } from '../comments/types'
-import { IReactionPost } from '../reactions/types'
+import type { IComment } from '../comments/types'
+import type { IReactionPost } from '../reactions/types'
 
 export interface IPost {
   id: string
