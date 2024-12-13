@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react'
 
 import { REACTION_LIST } from '@/constants/reactions'
 import { TAILWIND_COLORS } from '@/constants/tailwind-colors'
+import { useAuth } from '@/contexts/auth'
 import { usePost } from '@/contexts/post'
 import type { IPost } from '@/http/posts/types'
 import { getRandomAdjective } from '@/utils/get-random-adjective'
@@ -13,6 +14,7 @@ import { Avatar } from '../avatar'
 import { Options } from './options'
 import { PostPreview } from './post-preview'
 import { Reaction } from './reaction'
+import { ReactionList } from './reaction-list'
 
 export interface PostProps {
   post: IPost
@@ -21,10 +23,12 @@ export interface PostProps {
 export function Post({
   post: { id, isOwner, content, publishedAt, updatedAt, comments, reactions },
 }: PostProps) {
+  const { student } = useAuth()
   const { onDeletePostReaction } = usePost()
 
   const [modalPreview, setModalPreview] = useState(false)
   const [modalOptions, setModalOptions] = useState(false)
+  const [modalReactionList, setModalReactionList] = useState(false)
 
   function handleModalPreview() {
     setModalPreview(!modalPreview)
@@ -32,6 +36,10 @@ export function Post({
 
   function handleModalOptions() {
     setModalOptions(!modalOptions)
+  }
+
+  function handleModalReactionList() {
+    setModalReactionList(!modalReactionList)
   }
 
   const colors = useMemo(
@@ -53,15 +61,17 @@ export function Post({
 
   return (
     <div>
-      <div className="w-[432px] space-y-0">
-        <div className="flex items-center justify-between mb-3">
+      <div className="w-[432px]">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Avatar
               src={avatar}
               className={`size-10 object-cover ${colors.bg_color}`}
             />
 
-            <h1 className="text-zinc-300 text-sm font-semibold">{adjective}</h1>
+            <h1 className="text-zinc-300 text-sm font-semibold">
+              {isOwner ? `${student?.name} (você)` : adjective}
+            </h1>
 
             <time className="text-zinc-500 text-sm">
               {formatDistanceToNow(updatedAt || publishedAt, {
@@ -77,8 +87,15 @@ export function Post({
           />
         </div>
 
+        <p
+          onClick={reactions.length ? handleModalReactionList : undefined}
+          className="text-xs text-end text-zinc-400 cursor-pointer mb-2 hover:underline"
+        >
+          <strong>{reactions.length}</strong> reações
+        </p>
+
         <div
-          className={`relative w-full min-h-32 rounded-md p-4 ${colors.bg_color} pink`}
+          className={`relative w-full min-h-32 rounded-md p-4 ${colors.bg_color}`}
         >
           <p className={`text-sm ${colors.text_color}`}>{content}</p>
 
@@ -118,13 +135,24 @@ export function Post({
           reactions,
         }}
         reaction={reaction}
-        user={{ name: adjective, avatar }}
+        user={{ name: isOwner ? `${student?.name} (você)` : adjective, avatar }}
         backgroundColor={colors.bg_color}
         open={modalPreview}
         setOpen={handleModalPreview}
       />
 
-      <Options open={modalOptions} setOpen={handleModalOptions} />
+      <Options
+        postId={id}
+        isOwner={isOwner}
+        open={modalOptions}
+        setOpen={handleModalOptions}
+      />
+
+      <ReactionList
+        open={modalReactionList}
+        setOpen={handleModalReactionList}
+        reactions={reactions}
+      />
     </div>
   )
 }

@@ -29,6 +29,7 @@ const tabs = [
 
 export function ReactionList({ open, setOpen, reactions }: ReactionListProps) {
   const { student } = useAuth()
+
   const [activeTab, setActiveTab] = useState('all')
 
   const reactionsByTab =
@@ -46,7 +47,7 @@ export function ReactionList({ open, setOpen, reactions }: ReactionListProps) {
           onClick={(e) => e.stopPropagation()}
           className="w-[500px] rounded-lg bg-zinc-800"
         >
-          <div className="p-1 flex items-center justify-between">
+          <div className="p-2 flex items-center justify-between">
             <div className="space-x-1">
               {tabs.map((tab) => {
                 const amount =
@@ -61,14 +62,14 @@ export function ReactionList({ open, setOpen, reactions }: ReactionListProps) {
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={`
-                    px-4 
-                    py-3 
-                    text-sm 
-                    font-semibold
-                    rounded-lg
-                    transition-colors 
-                    hover:bg-yellow-500
-                    ${activeTab === tab.id ? 'bg-yellow-500' : 'text-zinc-300'}
+                      px-4 
+                      py-3  
+                      text-sm 
+                      font-semibold
+                      rounded-lg
+                      transition-colors 
+                      hover:bg-yellow-500
+                      ${activeTab === tab.id ? 'bg-yellow-500' : 'text-zinc-300'}
                     `}
                   >
                     {tab.title} <span className='font-normal'>{amount}</span>
@@ -82,7 +83,7 @@ export function ReactionList({ open, setOpen, reactions }: ReactionListProps) {
             </button>
           </div>
 
-          <div className="h-[500px] overflow-auto p-4 text-zinc-200 space-y-3">
+          <div className="h-[80vh] overflow-auto p-4 text-zinc-200 space-y-4">
             {reactionsByTab.map((reaction) => {
               const colors =
                 TAILWIND_COLORS[Math.floor(Math.random() * TAILWIND_COLORS.length)]
@@ -108,7 +109,7 @@ export function ReactionList({ open, setOpen, reactions }: ReactionListProps) {
                   <time className='text-xs'>
                     {formatDistanceToNow(reaction.reactedAt, {
                       locale: ptBR,
-                      addSuffix: true,
+                      addSuffix: true
                     })}
                   </time>
                 </div>

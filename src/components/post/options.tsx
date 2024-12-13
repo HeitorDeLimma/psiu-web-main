@@ -1,11 +1,44 @@
-import { ButtonOption } from './button-option'
+import { HTTPError } from 'ky'
+import { useState } from 'react'
+import { toast } from 'sonner'
+
+import { usePost } from '@/contexts/post'
+
+import { ButtonOption } from '../button-option'
+import { ModalConfirm } from '../modal/modal-confirm'
 
 interface OptionsProps {
+  postId: string
+  isOwner: boolean
   open: boolean
   setOpen(): void
 }
 
-export function Options({ open, setOpen }: OptionsProps) {
+export function Options({ postId, isOwner, open, setOpen }: OptionsProps) {
+  const { onDeletePost } = usePost()
+
+  const [modalConfirmDeletePost, setModalConfirmDeletePost] = useState(false)
+
+  function handleModalConfirmDeletePost() {
+    setModalConfirmDeletePost(!modalConfirmDeletePost)
+  }
+
+  async function handleDeletePost() {
+    try {
+      const { result, message } = await onDeletePost({ postId })
+
+      if (result === 'success') toast.success(message)
+    } catch (error) {
+      console.log(error)
+
+      if (error instanceof HTTPError) {
+        const { message } = await error.response.json()
+
+        toast.error(message)
+      }
+    }
+  }
+
   return (
     open && (
       <div
@@ -16,23 +49,34 @@ export function Options({ open, setOpen }: OptionsProps) {
           onClick={(e) => e.stopPropagation()}
           className="w-[400px] rounded-lg bg-zinc-800"
         >
-          <ButtonOption
-            className="text-red-500 font-medium"
-            onClick={() => {
-              //
-            }}
-          >
-            Denunciar
-          </ButtonOption>
+          {isOwner ? (
+            <ButtonOption
+              className="text-red-500 font-medium"
+              onClick={handleModalConfirmDeletePost}
+            >
+              Excluir
+            </ButtonOption>
+          ) : (
+            <>
+              <ButtonOption
+                className="text-red-500 font-medium"
+                onClick={() => {
+                  //
+                }}
+              >
+                Denunciar
+              </ButtonOption>
 
-          <ButtonOption
-            className="text-red-500 font-medium"
-            onClick={() => {
-              //
-            }}
-          >
-            Bloquear
-          </ButtonOption>
+              <ButtonOption
+                className="text-red-500 font-medium"
+                onClick={() => {
+                  //
+                }}
+              >
+                Bloquear
+              </ButtonOption>
+            </>
+          )}
 
           <ButtonOption
             className="text-zinc-300"
@@ -56,6 +100,14 @@ export function Options({ open, setOpen }: OptionsProps) {
             Cancelar
           </ButtonOption>
         </div>
+
+        <ModalConfirm
+          title="Excluir publicação?"
+          description="Tem certeza de que deseja excluir essa publicação?"
+          onConfirm={handleDeletePost}
+          open={modalConfirmDeletePost}
+          setOpen={handleModalConfirmDeletePost}
+        />
       </div>
     )
   )

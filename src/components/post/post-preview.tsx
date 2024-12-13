@@ -200,7 +200,13 @@ export function PostPreview({
             </form>
           </div>
 
-          <Options open={modalOptions} setOpen={handleModalOptions} />
+          <Options
+            postId={post.id}
+            isOwner={post.isOwner}
+            open={modalOptions}
+            setOpen={handleModalOptions}
+          />
+
           <ReactionList
             open={modalReactionList}
             setOpen={handleModalReactionList}
