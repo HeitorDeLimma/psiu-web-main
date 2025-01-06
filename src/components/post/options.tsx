@@ -69,12 +69,23 @@ export function Options({ postId, isOwner, open, setOpen }: OptionsProps) {
           className="w-[400px] rounded-lg bg-zinc-800"
         >
           {isOwner ? (
-            <ButtonOption
-              className="text-red-500 font-medium"
-              onClick={handleModalConfirmDeletePost}
-            >
-              Excluir
-            </ButtonOption>
+            <>
+              <ButtonOption
+                className="text-red-500 font-medium"
+                onClick={handleModalConfirmDeletePost}
+              >
+                Excluir
+              </ButtonOption>
+
+              <ButtonOption
+                className="text-zinc-300"
+                onClick={() => {
+                  //
+                }}
+              >
+                Editar
+              </ButtonOption>
+            </>
           ) : (
             <>
               <ButtonOption

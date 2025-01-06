@@ -34,7 +34,7 @@ export function NewPost() {
       if (error instanceof HTTPError) {
         const { message } = await error.response.json()
 
-        return { result: 'error', message }
+        toast.error(message)
       }
     }
   }
